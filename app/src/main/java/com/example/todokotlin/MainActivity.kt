@@ -14,7 +14,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    private var mTodoList: ArrayList<Todo>? = null
+    private val mTodoList = ArrayList<Todo>()
     private var mIsAllComplete = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,17 +25,15 @@ class MainActivity : AppCompatActivity() {
         val entry = findViewById<EditText>(R.id.todo_entry)
         val listView = findViewById<ListView>(R.id.todo_list_view)
 
-        mTodoList = ArrayList()
-
         entry.setOnKeyListener { view, i, keyEvent ->
             Log.d("MainActivity", "#View.OnKeyListener.onKey " + entry.text.toString())
             if (i == KeyEvent.KEYCODE_ENTER && keyEvent.action == KeyEvent.ACTION_DOWN) {
                 val task = entry.text.toString()
                 if ("" != task) {
                     val todo = Todo(
-                        mTodoList!!.size + 1, task, false
+                        mTodoList.size + 1, task, false
                     )
-                    mTodoList!!.add(todo)
+                    mTodoList.add(todo)
                     // ソフトキーボードを非表示
                     (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
                         .hideSoftInputFromWindow(view.windowToken, 0)
@@ -49,14 +47,14 @@ class MainActivity : AppCompatActivity() {
 
         allCompleted.setOnClickListener {
             mIsAllComplete = !mIsAllComplete
-            for (i in mTodoList!!.indices) {
-                mTodoList!![i].isCompleted = mIsAllComplete
+            for (i in mTodoList.indices) {
+                mTodoList[i].isCompleted = mIsAllComplete
             }
             val adapter = listView.adapter as TodoListAdapter
             adapter.notifyDataSetChanged()
         }
 
-        val adapter = TodoListAdapter(this, R.layout.todo_list_view, mTodoList!!)
+        val adapter = TodoListAdapter(this, R.layout.todo_list_view, mTodoList)
         listView.adapter = adapter
     }
 }

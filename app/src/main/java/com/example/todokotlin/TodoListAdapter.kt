@@ -13,9 +13,9 @@ import com.example.todokotlin.model.Todo
 
 class TodoListAdapter(
     context: Context,
-    private val mResource: Int,
-    private val mItems: MutableList<Todo>)
-    : ArrayAdapter<Todo>(context, mResource, mItems) {
+    private val resource: Int,
+    private val item: MutableList<Todo>)
+    : ArrayAdapter<Todo>(context, resource, item) {
 
     private val mInflater: LayoutInflater =
         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -24,14 +24,14 @@ class TodoListAdapter(
         Log.d("TodoListAdapter", "#getView position $position")
         var view = convertView
         if (convertView == null) {
-            view = mInflater.inflate(mResource, null)
+            view = mInflater.inflate(resource, null)
         }
 
         val isCompleted = view!!.findViewById<View>(R.id.todo_list_is_completed)
         val todoTask = view.findViewById<TextView>(R.id.todo_list_content)
         val delete = view.findViewById<View>(R.id.todo_list_delete)
 
-        val item = mItems[position]
+        val item = item[position]
 
         todoTask.text = item.task
 
@@ -47,7 +47,7 @@ class TodoListAdapter(
         }
 
         delete.setOnClickListener {
-            mItems.removeAt(position)
+            this.item.removeAt(position)
             notifyDataSetChanged()
         }
         return view
